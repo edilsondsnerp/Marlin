@@ -639,7 +639,7 @@
  * Multiple extruders can be assigned to the same pin in which case
  * the fan will turn on when any selected extruder is above the threshold.
  */
-#define E0_AUTO_FAN_PIN 5 
+#define E0_AUTO_FAN_PIN 7    //EDILSON - O VALOR ANTERIOR ERA 5. Conferir para se o 7 é o MOSFET DE E1
 #define E1_AUTO_FAN_PIN -1
 #define E2_AUTO_FAN_PIN -1
 #define E3_AUTO_FAN_PIN -1
