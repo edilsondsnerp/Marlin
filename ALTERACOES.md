@@ -2,14 +2,17 @@
 
 > **Autor:** Edilson Correa  
 > **Base:** Marlin 2.1.2.1 (commit `09d0b4d152`)  
-> **Branch:** `anet_a8_mini_tmc2209`  
-> **Placa alvo:** MKS Gen L V2.1  
+> **Branch intermediária:** `anet_a8_mini_tmc2209`  
+> **Branch atual:** `anet_a8_mini_mks_eagle`  
+> **Placa intermediária:** MKS Gen L V2.1  
+> **Placa atual:** MKS Eagle  
 > **Impressora:** Anet A8 Mini  
 
 ---
 
 ## Sumário
 
+0. [Resumo da Evolução até a MKS Eagle](#0-resumo-da-evolução-até-a-mks-eagle)
 1. [Identificação e Placa](#1-identificação-e-placa)
 2. [Drivers de Motor — TMC2209](#2-drivers-de-motor--tmc2209)
 3. [Configurações de Comunicação Serial](#3-configurações-de-comunicação-serial)
@@ -30,6 +33,50 @@
 18. [Menu Customizado](#18-menu-customizado)
 19. [Alterações nos Arquivos de Pinos](#19-alterações-nos-arquivos-de-pinos)
 20. [Histórico de Commits](#20-histórico-de-commits)
+21. [Migração Atual para MKS Eagle](#21-migração-atual-para-mks-eagle)
+
+---
+
+## 0. Resumo da Evolução até a MKS Eagle
+
+Esta documentação agora cobre três estados da configuração:
+
+| Etapa | Referência | Objetivo |
+|---|---|---|
+| **Original** | Marlin 2.1.2.1 (`09d0b4d152`) | configuração padrão de fábrica usada como base |
+| **Branch TMC** | `anet_a8_mini_tmc2209` (`a0e70f8b2b`) | adaptação completa da Anet A8 Mini para MKS Gen L V2.1 com TMC2209 |
+| **Branch Atual** | `anet_a8_mini_mks_eagle` | migração para MKS Eagle preservando a mecânica e a lógica de homing já validadas |
+
+### Parâmetros alterados na migração atual para MKS Eagle
+
+| Parâmetro | Original | Branch TMC | Branch atual | Observação |
+|---|---|---|---|---|
+| `MOTHERBOARD` | `BOARD_RAMPS_14_EFB` | `BOARD_MKS_GEN_L_V21` | `BOARD_MKS_EAGLE` | migração da plataforma de controle para STM32 32 bits |
+| `default_envs` | `mega2560` | `mega2560` | `mks_eagle` | compilação passa a usar o ambiente PlatformIO da Eagle |
+| `SERIAL_PORT` | `0` | `0` | `-1` | USB CDC nativa da Eagle como porta principal |
+| `Z_MIN_PROBE_PIN` | comentado (`32`) | `32` | `Z_MAX_PIN` (`PC4`) | BLTouch no conector Z_MAX, preservando o endstop físico no Z_MIN |
+
+### Parâmetros herdados do branch TMC e mantidos sem alteração na migração atual
+
+> Nada físico foi alterado na impressora entre o branch TMC e o branch atual. Por isso, toda a geometria, offsets e comportamento de homing abaixo foram preservados.
+
+| Parâmetro | Original | Branch TMC | Branch atual | Motivo da manutenção |
+|---|---|---|---|---|
+| `X_BED_SIZE` | `200` | `150` | `150` | dimensões reais da Anet A8 Mini |
+| `Y_BED_SIZE` | `200` | `150` | `150` | dimensões reais da Anet A8 Mini |
+| `X_MIN_POS` | `0` | `-3` | `-3` | margem mecânica validada no branch TMC |
+| `NOZZLE_TO_PROBE_OFFSET` | `{ 10, 10, 0 }` | `{ -27, 0, 0 }` | `{ -27, 0, 0 }` | posição física do BLTouch não mudou |
+| `PROBING_MARGIN` | `10` | `10` | `10` | malha mantida como já validada |
+| `BLTOUCH` | comentado | habilitado | habilitado | sensor continua sendo usado para nivelamento |
+| `AUTO_BED_LEVELING_BILINEAR` | comentado | habilitado | habilitado | estratégia de nivelamento mantida |
+| `USE_PROBE_FOR_Z_HOMING` | comentado | comentado | comentado | homing Z continua no endstop físico |
+| `Z_SAFE_HOMING` | comentado | comentado | comentado | mantido desabilitado por decisão de projeto |
+
+### Escopo exato da migração atual
+
+1. Troca da board e do ambiente de compilação para Eagle.
+2. Troca da serial principal para USB nativa da placa.
+3. Redefinição do pino do sinal do BLTouch para um pino válido na Eagle, sem alterar offsets, margens ou homing do eixo Z.
 
 ---
 
@@ -564,4 +611,27 @@ O driver do slot **E1** foi reconfigurado para controlar o **segundo motor Z (Z2
 
 ---
 
-*Gerado em 14/03/2026 a partir do diff entre o Marlin 2.1.2.1 original e o branch `anet_a8_mini_tmc2209`.*
+## 21. Migração Atual para MKS Eagle
+
+### Commits realizados no branch `anet_a8_mini_mks_eagle`
+
+| Commit | Descrição |
+|---|---|
+| `c2ac1704aa` | Troca da `MOTHERBOARD` para `BOARD_MKS_EAGLE` e do `default_envs` para `mks_eagle` |
+| `04977c840c` | Troca da serial principal de `SERIAL_PORT 0` para `SERIAL_PORT -1` (USB nativa) |
+| `ad20773ead` | Redefinição do `Z_MIN_PROBE_PIN` para `Z_MAX_PIN` (`PC4`) para manter o BLTouch separado do endstop físico de Z |
+
+### Resumo consolidado do branch atual
+
+| Área | Branch TMC | Branch atual |
+|---|---|---|
+| Board | `BOARD_MKS_GEN_L_V21` | `BOARD_MKS_EAGLE` |
+| Ambiente PlatformIO | `mega2560` | `mks_eagle` |
+| Serial principal | `0` | `-1` |
+| Sinal do BLTouch | `32` | `Z_MAX_PIN` (`PC4`) |
+| Homing do eixo Z | endstop físico | endstop físico |
+| `Z_SAFE_HOMING` | desabilitado | desabilitado |
+
+---
+
+*Gerado em 20/03/2026 a partir do diff entre o Marlin 2.1.2.1 original, o branch `anet_a8_mini_tmc2209` e o branch `anet_a8_mini_mks_eagle`.*
