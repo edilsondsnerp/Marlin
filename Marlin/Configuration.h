@@ -1302,7 +1302,7 @@
  *      - normally-closed switches to GND and D32.
  *      - normally-open switches to 5V and D32.
  */
-#define Z_MIN_PROBE_PIN 32 //40 Foi o pino escolhido na RAMPS, 32 PINO NA MKS // Pin 32 is the RAMPS default //EDILSON
+#define Z_MIN_PROBE_PIN Z_MAX_PIN // Eagle: BLTouch signal on Z_MAX (PC4), keeping Z_MIN for the physical endstop
 
 /**
  * Probe Type
