@@ -3,7 +3,7 @@
 > **Autor:** Edilson Correa  
 > **Base:** Marlin 2.1.2.1 (commit `09d0b4d152`)  
 > **Branch intermediária:** `anet_a8_mini_tmc2209`  
-> **Branch atual:** `anet_a8_mini_mks_eagle`  
+> **Branch da MKS Eagle:** `anet_a8_mini_mks_eagle`  
 > **Placa intermediária:** MKS Gen L V2.1  
 > **Placa atual:** MKS Eagle  
 > **Impressora:** Anet A8 Mini  
@@ -45,11 +45,11 @@ Esta documentação agora cobre três estados da configuração:
 |---|---|---|
 | **Original** | Marlin 2.1.2.1 (`09d0b4d152`) | configuração padrão de fábrica usada como base |
 | **Branch TMC** | `anet_a8_mini_tmc2209` (`a0e70f8b2b`) | adaptação completa da Anet A8 Mini para MKS Gen L V2.1 com TMC2209 |
-| **Branch Atual** | `anet_a8_mini_mks_eagle` | migração para MKS Eagle preservando a mecânica e a lógica de homing já validadas |
+| **MKS Eagle** | `anet_a8_mini_mks_eagle` | migração para MKS Eagle preservando a mecânica e a lógica de homing já validadas |
 
 ### Parâmetros alterados na migração atual para MKS Eagle
 
-| Parâmetro | Original | Branch TMC | Branch atual | Observação |
+| Parâmetro | Original | Branch TMC | MKS Eagle | Observação |
 |---|---|---|---|---|
 | `MOTHERBOARD` | `BOARD_RAMPS_14_EFB` | `BOARD_MKS_GEN_L_V21` | `BOARD_MKS_EAGLE` | migração da plataforma de controle para STM32 32 bits |
 | `default_envs` | `mega2560` | `mega2560` | `mks_eagle` | compilação passa a usar o ambiente PlatformIO da Eagle |
@@ -58,9 +58,9 @@ Esta documentação agora cobre três estados da configuração:
 
 ### Parâmetros herdados do branch TMC e mantidos sem alteração na migração atual
 
-> Nada físico foi alterado na impressora entre o branch TMC e o branch atual. Por isso, toda a geometria, offsets e comportamento de homing abaixo foram preservados.
+> Nada físico foi alterado na impressora entre o branch TMC e a etapa da MKS Eagle. Por isso, toda a geometria, offsets e comportamento de homing abaixo foram preservados.
 
-| Parâmetro | Original | Branch TMC | Branch atual | Motivo da manutenção |
+| Parâmetro | Original | Branch TMC | MKS Eagle | Motivo da manutenção |
 |---|---|---|---|---|
 | `X_BED_SIZE` | `200` | `150` | `150` | dimensões reais da Anet A8 Mini |
 | `Y_BED_SIZE` | `200` | `150` | `150` | dimensões reais da Anet A8 Mini |
@@ -621,9 +621,9 @@ O driver do slot **E1** foi reconfigurado para controlar o **segundo motor Z (Z2
 | `04977c840c` | Troca da serial principal de `SERIAL_PORT 0` para `SERIAL_PORT -1` (USB nativa) |
 | `ad20773ead` | Redefinição do `Z_MIN_PROBE_PIN` para `Z_MAX_PIN` (`PC4`) para manter o BLTouch separado do endstop físico de Z |
 
-### Resumo consolidado do branch atual
+### Resumo consolidado da MKS Eagle
 
-| Área | Branch TMC | Branch atual |
+| Área | Branch TMC | MKS Eagle |
 |---|---|---|
 | Board | `BOARD_MKS_GEN_L_V21` | `BOARD_MKS_EAGLE` |
 | Ambiente PlatformIO | `mega2560` | `mks_eagle` |
