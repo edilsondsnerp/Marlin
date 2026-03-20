@@ -54,7 +54,7 @@ Esta documentação agora cobre três estados da configuração:
 | `MOTHERBOARD` | `BOARD_RAMPS_14_EFB` | `BOARD_MKS_GEN_L_V21` | `BOARD_MKS_EAGLE` | migração da plataforma de controle para STM32 32 bits |
 | `default_envs` | `mega2560` | `mega2560` | `mks_eagle` | compilação passa a usar o ambiente PlatformIO da Eagle |
 | `SERIAL_PORT` | `0` | `0` | `-1` | USB CDC nativa da Eagle como porta principal |
-| `Z_MIN_PROBE_PIN` | comentado (`32`) | `32` | `Z_MAX_PIN` (`PC4`) | BLTouch no conector Z_MAX, preservando o endstop físico no Z_MIN |
+| `Z_MIN_PROBE_PIN` | comentado (`32`) | `32` | `PC4` | BLTouch no conector Z_MAX, preservando o endstop físico no Z_MIN |
 
 ### Parâmetros herdados do branch TMC e mantidos sem alteração na migração atual
 
@@ -619,7 +619,7 @@ O driver do slot **E1** foi reconfigurado para controlar o **segundo motor Z (Z2
 |---|---|
 | `c2ac1704aa` | Troca da `MOTHERBOARD` para `BOARD_MKS_EAGLE` e do `default_envs` para `mks_eagle` |
 | `04977c840c` | Troca da serial principal de `SERIAL_PORT 0` para `SERIAL_PORT -1` (USB nativa) |
-| `ad20773ead` | Redefinição do `Z_MIN_PROBE_PIN` para `Z_MAX_PIN` (`PC4`) para manter o BLTouch separado do endstop físico de Z |
+| `ad20773ead` | Redefinição do `Z_MIN_PROBE_PIN` para `PC4` no conector Z_MAX, mantendo o BLTouch separado do endstop físico de Z |
 
 ### Resumo consolidado da MKS Eagle
 
@@ -628,7 +628,7 @@ O driver do slot **E1** foi reconfigurado para controlar o **segundo motor Z (Z2
 | Board | `BOARD_MKS_GEN_L_V21` | `BOARD_MKS_EAGLE` |
 | Ambiente PlatformIO | `mega2560` | `mks_eagle` |
 | Serial principal | `0` | `-1` |
-| Sinal do BLTouch | `32` | `Z_MAX_PIN` (`PC4`) |
+| Sinal do BLTouch | `32` | `PC4` (conector Z_MAX) |
 | Homing do eixo Z | endstop físico | endstop físico |
 | `Z_SAFE_HOMING` | desabilitado | desabilitado |
 

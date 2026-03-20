@@ -1302,7 +1302,7 @@
  *      - normally-closed switches to GND and D32.
  *      - normally-open switches to 5V and D32.
  */
-#define Z_MIN_PROBE_PIN Z_MAX_PIN // Eagle: BLTouch signal on Z_MAX (PC4), keeping Z_MIN for the physical endstop
+#define Z_MIN_PROBE_PIN PC4 // Eagle: BLTouch signal on Z_MAX connector (PC4), keeping Z_MIN for the physical endstop
 
 /**
  * Probe Type
